@@ -1,118 +1,1083 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# HelpDesk Lite
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A production-oriented REST API built with **NestJS**. The project is designed around clean backend architecture, separation of responsibilities, request validation, authorization, middleware, interceptors, and production deployment.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Overview
 
-## Description
+HelpDesk Lite is a lightweight helpdesk/ticket management backend.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+The project focuses on building a maintainable NestJS REST API with a clear separation between:
 
-## Project setup
+- HTTP/API handling
+- Business logic
+- Request validation
+- Authorization
+- Cross-cutting concerns
+- Response transformation
+- Production deployment
 
-```bash
-$ bun install
+The current version uses in-memory data and does **not** require a database.
+
+---
+
+## Features
+
+- RESTful API architecture
+- Modular NestJS structure
+- Controllers for HTTP request handling
+- Services/providers for business logic
+- Dependency Injection
+- Dynamic route parameters
+- Query parameter filtering
+- DTO-based request structure
+- Runtime request validation
+- Global `ValidationPipe`
+- Ticket creation
+- Ticket retrieval
+- Ticket filtering
+- Ticket update with `PATCH`
+- Request logging middleware
+- Authorization guards
+- Standardized API responses with interceptors
+- Production-ready build
+- GitHub-based deployment workflow
+- Render deployment support
+
+---
+
+## Tech Stack
+
+### Backend
+
+- **NestJS**
+- **Node.js**
+- **TypeScript**
+
+### Package Manager
+
+- **Bun**
+
+### Development
+
+- NestJS CLI
+- Git
+- GitHub
+- Postman / Thunder Client
+
+### Deployment
+
+- **Render**
+
+### Database
+
+Currently:
+
+> No database. The project uses in-memory data for learning and architecture development.
+
+A database can be introduced in a future version.
+
+---
+
+# Architecture
+
+The application follows NestJS's modular architecture.
+
+```text
+                    Client
+                      │
+                      ▼
+                HTTP Request
+                      │
+                      ▼
+                 Middleware
+                      │
+                      ▼
+                   Guards
+                      │
+                      ▼
+                Interceptors
+                      │
+                      ▼
+              Validation / Pipes
+                      │
+                      ▼
+                 Controller
+                      │
+                      ▼
+                   Service
+                      │
+                      ▼
+               Business Logic
+                      │
+                      ▼
+                Interceptors
+                      │
+                      ▼
+                HTTP Response
 ```
 
-## Compile and run the project
+### Responsibility separation
 
-```bash
-# development
-$ bun run start
+| Component | Responsibility |
+|---|---|
+| Module | Feature organization and dependency management |
+| Controller | HTTP routes and request handling |
+| Service | Business logic |
+| DTO | Request data structure |
+| ValidationPipe | Runtime request validation |
+| Middleware | Request-level cross-cutting processing |
+| Guard | Authorization/access decisions |
+| Interceptor | Request/response transformation and cross-cutting behavior |
 
-# watch mode
-$ bun run start:dev
+---
 
-# production mode
-$ bun run start:prod
+# Project Structure
+
+The project follows a feature-oriented structure.
+
+```text
+helpdesk-lite/
+│
+├── src/
+│   │
+│   ├── tickets/
+│   │   ├── dto/
+│   │   │   ├── create-ticket.dto.ts
+│   │   │   └── update-ticket.dto.ts
+│   │   │
+│   │   ├── tickets.controller.ts
+│   │   ├── tickets.service.ts
+│   │   └── tickets.module.ts
+│   │
+│   ├── common/
+│   │   ├── middleware/
+│   │   ├── guards/
+│   │   └── interceptors/
+│   │
+│   ├── app.controller.ts
+│   ├── app.service.ts
+│   ├── app.module.ts
+│   └── main.ts
+│
+├── test/
+│
+├── package.json
+├── bun.lock
+├── nest-cli.json
+├── tsconfig.json
+├── tsconfig.build.json
+└── README.md
 ```
 
-## Run tests
+> The exact file structure may evolve as the project grows.
 
-```bash
-# unit tests
-$ bun run test
+---
 
-# e2e tests
-$ bun run test:e2e
+# Ticket API
 
-# test coverage
-$ bun run test:cov
+The primary resource of HelpDesk Lite is a **Ticket**.
+
+A ticket represents a customer support issue.
+
+Example:
+
+```json
+{
+  "id": "1",
+  "title": "Unable to login",
+  "description": "The user cannot access the account",
+  "status": "open"
+}
 ```
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+# API Endpoints
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Base URL:
 
-```bash
-$ bun install -g @nestjs/mau
-$ mau deploy
+```text
+http://localhost:3000
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Production:
 
-## Observability
+```text
+https://<your-render-service>.onrender.com
+```
 
-In production applications, observability is essential for understanding how your system behaves, detecting issues early, and maintaining reliable performance.
+## Tickets
 
-[NestJS Observe](https://observe.nestjs.com) automatically instruments your NestJS application, giving you deep visibility into your system with minimal setup:
+### Get all tickets
 
-- **Distributed tracing:** Follow requests across services and understand how they flow through your system.
-- **Waterfall analysis:** Visualize request execution and identify slow operations, bottlenecks, and unexpected delays.
-- **Performance analysis:** Analyze application performance in real time and quickly pinpoint areas that need optimization.
-- **Metrics:** Track key application and infrastructure metrics to understand system health and performance trends.
-- **Logging:** Centralize and correlate logs with traces and other telemetry to make debugging easier.
-- **Error tracking:** Detect errors quickly and investigate their root causes with the surrounding context.
-- **SLA monitoring:** Track service-level objectives and identify when your application is approaching or exceeding defined thresholds.
-- **Alarms and alerts:** Set up alerts for critical errors, performance degradation, SLA violations, and other anomalies so your team can react quickly.
+```http
+GET /tickets
+```
 
-This project is already instrumented. Create a free account at [observe.nestjs.com](https://observe.nestjs.com), add an application, and paste the generated app key and secret into the `ObserveModule.forRoot()` call in `src/app.module.ts`.
+Returns all available tickets.
 
-The free plan needs no payment details and covers 300,000 events a month. You can also browse the [live demo](https://www.observe-demo.nestjs.com/dashboard) first - the whole dashboard over a busy service's data, with nothing to install.
+---
 
-## Resources
+### Filter tickets
 
-Check out a few resources that may come in handy when working with NestJS:
+```http
+GET /tickets?status=open
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Auto-instrument your application with [NestJS Observe](https://observe.nestjs.com). Distributed tracing, metrics, and logging made easy. Error tracking and performance monitoring for your NestJS applications.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Example:
 
-## Support
+```http
+GET /tickets?status=closed
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Query parameters can be used to filter the ticket collection.
 
-## Stay in touch
+---
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Get a single ticket
 
-## License
+```http
+GET /tickets/:id
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Example:
+
+```http
+GET /tickets/1
+```
+
+---
+
+### Create a ticket
+
+```http
+POST /tickets
+```
+
+Example request body:
+
+```json
+{
+  "title": "Unable to login",
+  "description": "The user cannot access the account"
+}
+```
+
+---
+
+### Update a ticket
+
+```http
+PATCH /tickets/:id
+```
+
+Example:
+
+```http
+PATCH /tickets/1
+```
+
+Request body:
+
+```json
+{
+  "status": "closed"
+}
+```
+
+PATCH is used for partial updates.
+
+---
+
+# DTOs
+
+DTO stands for **Data Transfer Object**.
+
+DTOs define the expected structure of incoming request data.
+
+Example:
+
+```ts
+export class CreateTicketDto {
+  title: string;
+  description: string;
+}
+```
+
+With validation:
+
+```ts
+import { IsNotEmpty, IsString } from 'class-validator';
+
+export class CreateTicketDto {
+  @IsString()
+  @IsNotEmpty()
+  title: string;
+
+  @IsString()
+  @IsNotEmpty()
+  description: string;
+}
+```
+
+DTOs provide a clear boundary between external request data and application logic.
+
+---
+
+# Validation
+
+The application uses NestJS `ValidationPipe` together with `class-validator` and `class-transformer`.
+
+Global validation is configured in `main.ts`.
+
+Example:
+
+```ts
+app.useGlobalPipes(
+  new ValidationPipe({
+    whitelist: true,
+    transform: true,
+  }),
+);
+```
+
+### Validation flow
+
+```text
+Request
+   ↓
+DTO
+   ↓
+ValidationPipe
+   ↓
+Valid?
+ ┌───────┴───────┐
+ No              Yes
+ ↓                ↓
+Error          Controller
+                  ↓
+                Service
+```
+
+This prevents invalid request data from reaching business logic.
+
+---
+
+# Dependency Injection
+
+NestJS uses Dependency Injection to manage providers.
+
+Example:
+
+```ts
+@Controller('tickets')
+export class TicketsController {
+  constructor(
+    private readonly ticketsService: TicketsService,
+  ) {}
+}
+```
+
+The controller does not manually create the service.
+
+NestJS resolves and injects the dependency.
+
+This keeps components loosely coupled and easier to maintain and test.
+
+---
+
+# Controllers
+
+Controllers are responsible for handling HTTP requests.
+
+Example:
+
+```ts
+@Controller('tickets')
+export class TicketsController {
+  @Get()
+  findAll() {
+    return this.ticketsService.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.ticketsService.findOne(id);
+  }
+}
+```
+
+Controllers should remain thin.
+
+Business rules should live inside services.
+
+---
+
+# Services
+
+Services contain business logic.
+
+Example:
+
+```ts
+@Injectable()
+export class TicketsService {
+  findAll() {
+    return this.tickets;
+  }
+
+  findOne(id: string) {
+    return this.tickets.find(
+      ticket => ticket.id === id,
+    );
+  }
+}
+```
+
+The service layer provides a separation between HTTP handling and application logic.
+
+---
+
+# Middleware
+
+Middleware runs during request processing.
+
+A logging middleware can record:
+
+- HTTP method
+- URL
+- Request timing
+- Other request metadata
+
+Example:
+
+```ts
+@Injectable()
+export class LoggerMiddleware
+  implements NestMiddleware {
+
+  use(req: Request, res: Response, next: NextFunction) {
+    console.log(
+      `${req.method} ${req.originalUrl}`,
+    );
+
+    next();
+  }
+}
+```
+
+### Why middleware?
+
+Logging is a cross-cutting concern.
+
+Instead of repeating logging code inside every controller, middleware can handle it centrally.
+
+---
+
+# Guards
+
+Guards determine whether a request is allowed to continue.
+
+Example:
+
+```ts
+@Injectable()
+export class AuthGuard implements CanActivate {
+  canActivate(
+    context: ExecutionContext,
+  ): boolean {
+    return true;
+  }
+}
+```
+
+Usage:
+
+```ts
+@UseGuards(AuthGuard)
+@Get()
+findAll() {
+  return this.ticketsService.findAll();
+}
+```
+
+The guard layer is intended for authorization/access-control decisions.
+
+---
+
+# Interceptors
+
+Interceptors can execute logic before and after the controller handler.
+
+They are useful for:
+
+- Response transformation
+- Request timing
+- Logging
+- Consistent response formatting
+- Cross-cutting behavior
+
+Example standardized response:
+
+```json
+{
+  "success": true,
+  "data": {}
+}
+```
+
+This allows response formatting to be handled centrally rather than duplicated across controllers.
+
+---
+
+# Request Lifecycle
+
+A simplified lifecycle for this project:
+
+```text
+Client
+  │
+  ▼
+Middleware
+  │
+  ▼
+Guards
+  │
+  ▼
+Interceptors
+  │
+  ▼
+Pipes / Validation
+  │
+  ▼
+Controller
+  │
+  ▼
+Service
+  │
+  ▼
+Controller Response
+  │
+  ▼
+Interceptors
+  │
+  ▼
+Client
+```
+
+Understanding this lifecycle is an important part of understanding NestJS architecture.
+
+---
+
+# Installation
+
+## Requirements
+
+Make sure the following are installed:
+
+```bash
+node --version
+bun --version
+git --version
+```
+
+---
+
+# Clone the Project
+
+```bash
+git clone <YOUR_REPOSITORY_URL>
+```
+
+Move into the project:
+
+```bash
+cd helpdesk-lite
+```
+
+---
+
+# Install Dependencies
+
+This project uses Bun.
+
+```bash
+bun install
+```
+
+---
+
+# Development
+
+Start the development server:
+
+```bash
+bun run start:dev
+```
+
+The API will normally be available at:
+
+```text
+http://localhost:3000
+```
+
+---
+
+# Build
+
+Create a production build:
+
+```bash
+bun run build
+```
+
+The compiled application will be generated inside the `dist` directory.
+
+---
+
+# Production
+
+Start the production application:
+
+```bash
+bun run start:prod
+```
+
+The production process should execute the compiled NestJS application.
+
+---
+
+# package.json Scripts
+
+The project uses scripts similar to:
+
+```json
+{
+  "scripts": {
+    "build": "nest build",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:prod": "node dist/main"
+  }
+}
+```
+
+Bun executes them with:
+
+```bash
+bun run build
+bun run start:dev
+bun run start:prod
+```
+
+---
+
+# Environment Variables
+
+The project currently has minimal environment requirements.
+
+For local development, a `.env` file can be used when environment-specific configuration is introduced.
+
+Example:
+
+```env
+PORT=3000
+NODE_ENV=development
+```
+
+Do not commit `.env` files containing secrets.
+
+Recommended `.gitignore` entries:
+
+```gitignore
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+```
+
+---
+
+# Render Deployment
+
+The project can be deployed as a Render Web Service.
+
+## Deployment Architecture
+
+```text
+Local Development
+       │
+       ▼
+     Git
+       │
+       ▼
+    GitHub
+       │
+       ▼
+     Render
+       │
+       ├── Install dependencies
+       │
+       ├── Build NestJS
+       │
+       └── Start production server
+       │
+       ▼
+ Public API
+```
+
+---
+
+## Render Build Command
+
+Use:
+
+```bash
+bun install && bun run build
+```
+
+---
+
+## Render Start Command
+
+Use:
+
+```bash
+bun run start:prod
+```
+
+---
+
+## Render Port Configuration
+
+The application should listen on the port supplied by the hosting platform.
+
+Use:
+
+```ts
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+
+  const port = process.env.PORT || 3000;
+
+  await app.listen(port, '0.0.0.0');
+}
+
+bootstrap();
+```
+
+The important parts are:
+
+```ts
+process.env.PORT
+```
+
+and:
+
+```ts
+'0.0.0.0'
+```
+
+This allows the application to accept traffic correctly in a managed cloud environment.
+
+---
+
+# Deployment Checklist
+
+Before deploying:
+
+```text
+[ ] bun install
+[ ] bun run build
+[ ] bun run start:prod
+[ ] API tested locally
+[ ] .env excluded from Git
+[ ] Git repository updated
+[ ] GitHub push successful
+[ ] Render Web Service created
+[ ] Build command configured
+[ ] Start command configured
+[ ] PORT handling verified
+[ ] Production API tested
+```
+
+---
+
+# Development Workflow
+
+Recommended workflow:
+
+```text
+Create Feature
+     ↓
+Implement
+     ↓
+Run Local Server
+     ↓
+Test API
+     ↓
+Run Build
+     ↓
+Commit
+     ↓
+Push to GitHub
+     ↓
+Render Deploys
+     ↓
+Test Production API
+```
+
+Example:
+
+```bash
+bun run start:dev
+```
+
+Then:
+
+```bash
+bun run build
+```
+
+Then:
+
+```bash
+git add .
+git commit -m "feat: add ticket update endpoint"
+git push
+```
+
+---
+
+# Error Debugging
+
+## Build errors
+
+Run:
+
+```bash
+bun run build
+```
+
+Fix TypeScript/NestJS errors before deployment.
+
+---
+
+## Production start errors
+
+Run:
+
+```bash
+bun run start:prod
+```
+
+Check whether the `dist` directory was generated correctly.
+
+---
+
+## Port errors
+
+Verify:
+
+```ts
+await app.listen(
+  process.env.PORT || 3000,
+  '0.0.0.0',
+);
+```
+
+---
+
+## API route errors
+
+Check:
+
+- Controller prefix
+- HTTP method
+- Route parameters
+- Query parameters
+- Request body
+- DTO validation
+- Guard behavior
+
+---
+
+# Current Limitations
+
+This version intentionally does not include:
+
+- Database
+- PostgreSQL
+- Prisma
+- MongoDB
+- JWT authentication
+- User management
+- Role management
+- File upload
+- Redis
+- Docker
+- Microservices
+
+These can be introduced in future versions.
+
+---
+
+# Future Roadmap
+
+## Phase 1 — Core NestJS
+
+- [x] Project setup
+- [x] Modules
+- [x] Controllers
+- [x] Services
+- [x] Dependency Injection
+- [x] Route parameters
+- [x] Query parameters
+- [x] DTOs
+- [x] ValidationPipe
+- [x] POST
+- [x] PATCH
+- [x] Middleware
+- [x] Guards
+- [x] Interceptors
+- [x] Production build
+- [x] Cloud deployment
+
+## Phase 2 — Database
+
+Planned:
+
+- PostgreSQL
+- Prisma
+- Database schema
+- Migrations
+- Persistent tickets
+- Repository/data-access layer
+
+## Phase 3 — Authentication
+
+Planned:
+
+- User registration
+- Login
+- JWT
+- Authentication guards
+- Role-based authorization
+- User/ticket ownership
+
+## Phase 4 — Production Engineering
+
+Planned:
+
+- Unit testing
+- E2E testing
+- Docker
+- CI/CD
+- Structured logging
+- Error handling
+- API documentation
+- Health checks
+- Monitoring
+
+---
+
+# Engineering Principles
+
+## Keep Controllers Thin
+
+Controllers should primarily coordinate HTTP requests.
+
+```text
+Controller
+    ↓
+Service
+    ↓
+Business Logic
+```
+
+Avoid putting large business rules directly inside controllers.
+
+---
+
+## Separate Responsibilities
+
+Use the appropriate NestJS abstraction:
+
+```text
+HTTP routes
+    → Controller
+
+Business logic
+    → Service
+
+Request shape
+    → DTO
+
+Validation
+    → Pipe
+
+Request processing
+    → Middleware
+
+Authorization
+    → Guard
+
+Response transformation
+    → Interceptor
+```
+
+---
+
+# API Testing
+
+The API can be tested using:
+
+- Postman
+- Thunder Client
+- REST Client
+- cURL
+- Browser for simple GET requests
+
+Example:
+
+```bash
+curl http://localhost:3000/tickets
+```
+
+Create ticket:
+
+```bash
+curl -X POST http://localhost:3000/tickets \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Unable to login",
+    "description": "User cannot access the account"
+  }'
+```
+
+---
+
+# Project Status
+
+**Status:** Active Learning / Engineering Project
+
+**Backend:** NestJS
+
+**Language:** TypeScript
+
+**Package Manager:** Bun
+
+**Database:** None — in-memory
+
+**Deployment:** Render
+
+**API Style:** REST
+
+---
+
+# License
+
+This project is intended for learning and engineering practice.
+
+Add an appropriate open-source license here if the project is later published as an open-source repository.
